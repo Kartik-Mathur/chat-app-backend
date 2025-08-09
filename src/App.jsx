@@ -1,46 +1,35 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import ChatApp from "./pages/ChatApp";
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import Signup from "./pages/Signup";
+import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import AdminPortal from "./pages/AdminPortal";
+import NewPost from "./pages/NewPost";
+import EditPost from "./pages/EditPost";
+import Navbar from "./components/Navbar";
+import PublicRoute from "./components/PublicRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminTags from "./pages/AdminTags";
 
 const App = () => {
-  const [userName, setUserName] = useState("");
-  const [socket, setSocket] = useState();
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  function joinChatRoom() {
-    setLoggedIn(true);
-    socket.send({
-      type: "joinChatRoom",
-      payload: {
-        name: userName,
-      },
-    });
-  }
-
-  useEffect(() => {
-    // let ws = new WebSocket("ws://localhost:8080");
-    let ws = new WebSocket("https://chat-app-backend-rkzy.onrender.com");
-    setSocket(ws);
-
-    ws.onmessage = function ({ data }) {
-      setMessages((prevMessages) => [...prevMessages, data]);
-    };
-  }, []);
-
   return (
     <div>
-      {!loggedIn ? (
-        <>
-          <input
-            onChange={(ev) => setUserName(ev.target.value)}
-            type="text"
-            placeholder="Enter name to chat.../"
-          />
-          <button onClick={joinChatRoom}>Join chat</button>
-        </>
-      ) : (
-        <ChatApp userName={userName} socket={socket} />
-      )}
+      <Navbar />
+      <Routes>
+        <Route element={<PublicRoute />}>
+          <Route path="/" element={<Signup />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<AdminPortal />} />
+          <Route path="/admin/tags" element={<AdminTags />} />
+          <Route path="/admin/new" element={<NewPost />} />
+          <Route path="/admin/edit/:id" element={<EditPost />} />
+        </Route>
+      </Routes>
     </div>
   );
 };
