@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:4444/api/auth';
+const API_URL = 'https://chat-app-backend-rkzy.onrender.com/api/auth';
 
 // const api = axios.create({
 //     baseURL: API_URL
