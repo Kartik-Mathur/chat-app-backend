@@ -18,7 +18,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    let ws = new WebSocket("ws://localhost:8080");
+    // let ws = new WebSocket("ws://localhost:8080");
+    let ws = new WebSocket("https://chat-app-backend-rkzy.onrender.com");
     setSocket(ws);
 
     ws.onmessage = function ({ data }) {
